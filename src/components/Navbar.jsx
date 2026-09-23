@@ -1,8 +1,9 @@
 import logoImg from "../assets/logo.png"
+import { useState } from "react"
 import { useLocation, Link } from 'react-router-dom';
 
 export default function Navbar() {
-
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -42,19 +43,19 @@ export default function Navbar() {
         <a className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold hover:from-orange-600 hover:to-orange-700 hover:shadow-orange-500/50 hover:scale-105 transition-all duration-300"
          href="/blog" data-discover="true">ابدأ القراءة</a>
       </div>
-      <button className="md:hidden p-3 text-neutral-400 hover:text-white hover:bg-[#161616] rounded-xl transition-all duration-300 border border-transparent hover:border-[#262626]">
+      <button onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen} aria-label="Toggle menu" className="md:hidden p-3 text-neutral-400 hover:text-white hover:bg-[#161616] rounded-xl transition-all duration-300 border border-transparent hover:border-[#262626]">
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}></path>
         </svg>
       </button>
     </div>
-    <div className="md:hidden overflow-hidden transition-all duration-300 max-h-0">
+    <div className={`md:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96" : "max-h-0"}`}>
       <div className="bg-[#161616] backdrop-blur-xl rounded-2xl p-4 border border-[#262626]">
         <div className="flex flex-col space-y-1">
-          <a className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-orange-500/10 text-orange-500 border border-orange-500/30" href="/" data-discover="true" aria-current="page">الرئيسية</a>
-          <a className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white" href="/blog" data-discover="true">المدونة</a>
-          <a className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white" href="/about" data-discover="true">من نحن</a>
-          <a className="btn-primary text-sm text-center mt-2" href="/blog" data-discover="true">ابدأ القراءة</a>
+          <a onClick={() => setIsOpen(false)} className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-orange-500/10 text-orange-500 border border-orange-500/30" href="/" data-discover="true" aria-current="page">الرئيسية</a>
+          <a onClick={() => setIsOpen(false)} className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white" href="/blog" data-discover="true">المدونة</a>
+          <a onClick={() => setIsOpen(false)} className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white" href="/about" data-discover="true">من نحن</a>
+          <a onClick={() => setIsOpen(false)} className="btn-primary text-sm text-center mt-2" href="/blog" data-discover="true">ابدأ القراءة</a>
         </div>
       </div>
     </div>
