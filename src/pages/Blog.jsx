@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import postsData from '../../posts.json';
 import FilterBar from '../components/FilterBar';
 import PostCard from '../components/PostCard';
 
 
 export default function Blog() {
-    const [activeCategory, setActiveCategory] = useState('جميع المقالات');
+    const [searchParams, setSearchParams] = useSearchParams();
+    // Single source of truth: URL. No extra state -> no sync effect needed.
+    const activeCategory = searchParams.get('category') || 'جميع المقالات';
+
     const [searchQuery, setSearchQuery] = useState(''); 
     const [viewMode, setViewMode] = useState('grid');
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,8 +17,14 @@ export default function Blog() {
     const postsPerPage = 6;
 
     const handleCategoryChange = (category) => {
-    setActiveCategory(category);
-    setCurrentPage(1); 
+    setCurrentPage(1);
+    const next = new URLSearchParams(searchParams);
+    if (category === 'جميع المقالات') {
+      next.delete('category');
+    } else {
+      next.set('category', category);
+    }
+    setSearchParams(next);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -173,8 +183,8 @@ export default function Blog() {
               onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                 </svg>
             </button>
 
